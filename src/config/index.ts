@@ -51,7 +51,7 @@ export const config: Config = {
   },
   cache: {
     ttl: envConfig.CACHE_TTL ? Number(envConfig.CACHE_TTL) : 3600,
-    enabled: envConfig.CACHE_ENABLED !== 'false',
+    enabled: envConfig.CACHE_ENABLED === 'true' || !envConfig.CACHE_ENABLED,
   },
   badge: {
     defaultStyle: 'flat',

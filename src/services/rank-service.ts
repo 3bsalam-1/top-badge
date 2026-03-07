@@ -50,6 +50,9 @@ export async function getOrdinalRank(
 
   const cache = getRankCache();
 
+  // Debug: Log cache status
+  console.log(`[DEBUG] Cache enabled: ${!!cache}, Country: ${normalizedCountry}, User: ${username}`);
+
   // Check cache first
   if (cache) {
     const cachedRank = cache.get(cacheKey);
@@ -57,6 +60,7 @@ export async function getOrdinalRank(
       // If user is not in cached data, fetch fresh data to ensure we don't
       // return null for new users added after cache was populated
       if (username in cachedRank) {
+        console.log(`[DEBUG] Returning cached rank for ${username}: ${cachedRank[username]}`);
         return cachedRank[username] ?? null;
       }
       // User not found in cache - fall through to fetch fresh data
@@ -87,6 +91,8 @@ export async function getOrdinalRank(
   const userRanks: Record<string, string> = {};
   const userDataBlocks = data.split('\n\n');
 
+  console.log(`[DEBUG] Fetched YAML from ${url}, total blocks: ${userDataBlocks.length}`);
+
   for (const block of userDataBlocks) {
     try {
       const parsed = YAML.parse(block);
@@ -96,6 +102,10 @@ export async function getOrdinalRank(
           const userKey = userEntry.login ?? userEntry.username;
           if (typeof userEntry.rank === 'number') {
             userRanks[userKey] = ordinal(userEntry.rank);
+            // Debug: Log the user's rank we're parsing
+            if (userKey.toLowerCase() === username.toLowerCase()) {
+              console.log(`[DEBUG] Found user ${userKey} with rank ${userEntry.rank} => ${ordinal(userEntry.rank)}`);
+            }
           }
         }
       }
@@ -106,6 +116,8 @@ export async function getOrdinalRank(
       );
     }
   }
+
+  console.log(`[DEBUG] Total users parsed: ${Object.keys(userRanks).length}, looking for: ${username}`);
 
   // Cache the results for this country
   const rankCacheInstance = getRankCache();
