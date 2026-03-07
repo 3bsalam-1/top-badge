@@ -1,0 +1,40 @@
+{
+  "name": "top-badge",
+  "version": "1.0.0",
+  "main": "src/index.ts",
+  "scripts": {
+    "start": "bun .",
+    "dev": "bun --watch .",
+    "lint": "biome ci ."
+  },
+  "keywords": [],
+  "author": "Ahmed Mohamed <3bsalam0@gmail.com>",
+  "license": "ISC",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/3bsalam-1/top-badge.git"
+  },
+  "bugs": {
+    "url": "https://github.com/3bsalam-1/top-badge/issues"
+  },
+  "homepage": "https://github.com/3bsalam-1/top-badge#readme",
+  "description": "",
+  "dependencies": {
+    "@fastify/swagger": "^8.14.0",
+    "@fastify/swagger-ui": "^3.0.0",
+    "axios": "^1.7.2",
+    "badge-maker": "^3.3.1",
+    "fastify": "^4.27.0",
+    "fastify-type-provider-zod": "^1.2.0",
+    "ordinal": "^1.0.3",
+    "yamljs": "^0.3.0",
+    "zod": "^3.23.8"
+  },
+  "devDependencies": {
+    "@biomejs/biome": "^1.7.3",
+    "@types/bun": "latest",
+    "@types/node": "^20.14.0",
+    "@types/yamljs": "^0.2.34",
+    "typescript": "^5.4.5"
+  }
+}
