@@ -1,2 +1,2 @@
-export { registerBadgeRoutes } from './badge';
-export { registerRankRoutes } from './rank';
+export { registerBadgeRoutes } from './badge.js';
+export { registerRankRoutes } from './rank.js';

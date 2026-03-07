@@ -1,8 +1,8 @@
 import { makeBadge } from 'badge-maker';
 import type { FastifyInstance } from 'fastify';
-import { config } from '../config';
-import { getOrdinalRank } from '../services/rank-service';
-import { badgeParamsSchema, badgeQuerySchema } from '../types/routes';
+import { config } from '../config/index.js';
+import { getOrdinalRank } from '../services/rank-service.js';
+import { badgeParamsSchema, badgeQuerySchema } from '../types/routes.js';
 
 type BadgeStyle =
   | 'flat'

@@ -1,10 +1,10 @@
 import type { FastifyInstance } from 'fastify';
-import { getOrdinalRank } from '../services/rank-service';
+import { getOrdinalRank } from '../services/rank-service.js';
 import {
   rankParamsSchema,
   rankQuerySchema,
   rankResponseSchema,
-} from '../types/routes';
+} from '../types/routes.js';
 
 export async function registerRankRoutes(app: FastifyInstance): Promise<void> {
   app.get('/rank/:country/:username', {

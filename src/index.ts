@@ -4,9 +4,9 @@ import {
   validatorCompiler,
 } from 'fastify-type-provider-zod';
 import { ZodError } from 'zod';
-import { config } from './config';
-import { registerBadgeRoutes, registerRankRoutes } from './routes';
-import { registerSwagger } from './swagger';
+import { config } from './config/index.js';
+import { registerBadgeRoutes, registerRankRoutes } from './routes/index.js';
+import { registerSwagger } from './swagger.js';
 
 const app = fastify();
 

@@ -1,7 +1,7 @@
 import axios from 'axios';
 import ordinal from 'ordinal';
 import YAML from 'yamljs';
-import { getCountryYamlUrl } from '../config';
+import { getCountryYamlUrl } from '../config/index.js';
 
 export class UserNotFoundError extends Error {
   constructor(username: string, country: string) {
