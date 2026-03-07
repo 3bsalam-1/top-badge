@@ -40,13 +40,17 @@ export class UserNotFoundError extends Error {
   }
 }
 
+export type Category = 'all' | 'commits' | 'contributes';
+
 export async function getOrdinalRank(
   username: string,
   country: string,
+  category: Category = 'all',
 ): Promise<string | null> {
   // Normalize country to lowercase for consistent cache key and URL
   const normalizedCountry = country.toLowerCase();
-  const cacheKey = normalizedCountry;
+  // Include category in cache key to separate different category rankings
+  const cacheKey = `${normalizedCountry}:${category}`;
 
   const cache = getRankCache();
 
@@ -91,20 +95,39 @@ export async function getOrdinalRank(
   const userRanks: Record<string, string> = {};
   const userDataBlocks = data.split('\n\n');
 
-  console.log(`[DEBUG] Fetched YAML from ${url}, total blocks: ${userDataBlocks.length}`);
+  console.log(`[DEBUG] Fetched YAML from ${url}, total blocks: ${userDataBlocks.length}, category: ${category}`);
 
-  for (const block of userDataBlocks) {
+  // Track which block number corresponds to which category
+  // Block 0 = all, Block 1 = commits, Block 2 = contributes (based on committers.top structure)
+  const categoryBlockMap: Record<Category, number> = {
+    all: 0,
+    commits: 1,
+    contributes: 2,
+  };
+  const targetBlockIndex = categoryBlockMap[category] ?? 0;
+
+  for (let blockIndex = 0; blockIndex < userDataBlocks.length; blockIndex++) {
+    const block = userDataBlocks[blockIndex];
     try {
       const parsed = YAML.parse(block);
+      // Debug: Log structure of first block to understand YAML format
+      if (blockIndex === 0 && parsed && Array.isArray(parsed) && parsed.length > 0) {
+        console.log(`[DEBUG] First entry keys: ${Object.keys(parsed[0]).join(', ')}`);
+        console.log(`[DEBUG] First entry sample:`, JSON.stringify(parsed[0]));
+      }
+      
       if (parsed && Array.isArray(parsed) && parsed.length > 0) {
         const userEntry = parsed[0];
         if (userEntry?.login || userEntry?.username) {
           const userKey = userEntry.login ?? userEntry.username;
           if (typeof userEntry.rank === 'number') {
-            userRanks[userKey] = ordinal(userEntry.rank);
-            // Debug: Log the user's rank we're parsing
-            if (userKey.toLowerCase() === username.toLowerCase()) {
-              console.log(`[DEBUG] Found user ${userKey} with rank ${userEntry.rank} => ${ordinal(userEntry.rank)}`);
+            // Only parse the block that matches the requested category
+            if (blockIndex === targetBlockIndex) {
+              userRanks[userKey] = ordinal(userEntry.rank);
+              // Debug: Log the user's rank we're parsing
+              if (userKey.toLowerCase() === username.toLowerCase()) {
+                console.log(`[DEBUG] Found user ${userKey} with rank ${userEntry.rank} => ${ordinal(userEntry.rank)} in block ${blockIndex}`);
+              }
             }
           }
         }
