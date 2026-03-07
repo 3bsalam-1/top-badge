@@ -43,11 +43,11 @@ Redirects to this repository.
 
 ##### Examples
 
-> `![badge](http://localhost:3000/egypt/3bsalam-1)`  
-> ![badge](http://localhost:3000/egypt/3bsalam-1)
+> `![badge](https://top-badge.vercel.app/egypt/3bsalam-1)`  
+> ![badge](https://top-badge.vercel.app/egypt/3bsalam-1)
 
-> `![badge](http://localhost:3000/egypt/3bsalam-1?style=flat-square&color=blue)`  
-> ![badge](http://localhost:3000/egypt/3bsalam-1?style=flat-square&color=blue)  
+> `![badge](https://top-badge.vercel.app/egypt/3bsalam-1?style=flat-square&color=blue)`  
+> ![badge](https://top-badge.vercel.app/egypt/3bsalam-1?style=flat-square&color=blue)  
 
 ---
 
@@ -60,7 +60,7 @@ Redirects to this repository.
 ##### Example
 
 ```bash
-$ curl http://localhost:3000/rank/egypt/3bsalam-1
+$ curl https://top-badge.vercel.app/rank/egypt/3bsalam-1
 
 {
     "rank": "1st"
