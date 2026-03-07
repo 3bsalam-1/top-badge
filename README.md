@@ -1,23 +1,21 @@
-<h1 align="left">Aktive 🟩
-<a target="_blank" href="https://fastify.io"><img alt="fastify" align="right" src="https://img.shields.io/static/v1?logo=fastify&label=&message=Fastify&style=for-the-badge&color=grey"/></a>
-<a target="_blank" href="https://railway.app/"><img alt="Railway" align="right" src="https://img.shields.io/static/v1?label=&message=Railway&style=for-the-badge&color=grey&logo=railway" /></a>
-</h1>
+<h1 align="left">Top Badge 🏆</h1>
 
-Aktive is a simple web service. It returns a badge (or JSON) that shows your rank among other GitHub users from your country according to your GitHub contributions.
+> **Note**  
+> This project was built using [kerolloz/aktive](https://github.com/kerolloz/aktive) as a reference.
+
+Top Badge is a simple web service. It returns a badge (or JSON) that shows your rank among other GitHub users from your country according to your GitHub contributions.
 
 > **Note**  
 >  
-> Aktive depends on the data provided by [ashkulz/committers.top](//github.com/ashkulz/committers.top).  
+> Top Badge depends on the data provided by [ashkulz/committers.top](//github.com/ashkulz/committers.top).  
 > So please make sure that your name appears on your country list here [committers.top](https://committers.top).
 
 ## Docs
 
 > [!NOTE]
-> You can also check the Swagger [API documentation](https://aktive.kerolloz.dev/swagger) for more details.
+> You can also check the Swagger API documentation at `/swagger` for more details.
 
 ### Endpoints
-
-> Base URL: <https://aktive.kerolloz.dev>
 
 #### GET `/`
 
@@ -45,25 +43,15 @@ Redirects to this repository.
 
 ##### Examples
 
-> `![badge](https://aktive.kerolloz.dev/egypt/kerolloz)`  
-> ![badge](https://aktive.kerolloz.dev/egypt/kerolloz)
+> `![badge](http://localhost:3000/egypt/3bsalam-1)`  
+> ![badge](http://localhost:3000/egypt/3bsalam-1)
 
-> `![badge](https://aktive.kerolloz.dev/egypt/kerolloz?style=flat-square&color=blue)`  
-> ![badge](https://aktive.kerolloz.dev/egypt/kerolloz?style=flat-square&color=blue)  
-
-> `![badge](https://aktive.kerolloz.dev/egypt/kerolloz?label=Most%20Active%20GitHub%20User%20In%20Egypt&labelColor=white&rnkPrefix=Rank%20)`  
-> ![badge](https://aktive.kerolloz.dev/egypt/kerolloz?label=Most%20Active%20GitHub%20User%20In%20Egypt&labelColor=white&rnkPrefix=Rank%20)
-
-> `![badge](https://aktive.kerolloz.dev/egypt/kerolloz?label=&color=cyan&style=for-the-badge&rnkPrefix=Ranked%20&rnkSuffix=%20In%20Egypt)`  
-> ![badge](https://aktive.kerolloz.dev/egypt/kerolloz?label=&color=cyan&style=for-the-badge&rnkPrefix=Ranked%20&rnkSuffix=%20In%20Egypt)
+> `![badge](http://localhost:3000/egypt/3bsalam-1?style=flat-square&color=blue)`  
+> ![badge](http://localhost:3000/egypt/3bsalam-1?style=flat-square&color=blue)  
 
 ---
 
 #### GET `/rank/:country/:username`
-
-<a target="_blank" href="https://reqbin.com/c-1lldzybw ">
-  <img align="right" alt="Try it" src="https://img.shields.io/badge/-Try%20it-white?style=for-the-badge" />
-</a>
 
 - Returns a JSON object with your rank.
 
@@ -72,9 +60,9 @@ Redirects to this repository.
 ##### Example
 
 ```bash
-$ curl https://aktive.kerolloz.dev/rank/egypt/kerolloz
+$ curl http://localhost:3000/rank/egypt/3bsalam-1
 
 {
-    "rank": "109th"
+    "rank": "1st"
 }
 ```

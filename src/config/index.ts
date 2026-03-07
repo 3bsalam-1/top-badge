@@ -40,8 +40,8 @@ const envConfig = {
 
 export const config: Config = {
   github: {
-    owner: envConfig.GITHUB_OWNER ?? '3bsalam-1',
-    repo: envConfig.GITHUB_REPO ?? 'top-badge',
+    owner: envConfig.GITHUB_OWNER ?? 'ashkulz',
+    repo: envConfig.GITHUB_REPO ?? 'committers.top',
     branch: envConfig.GITHUB_BRANCH ?? 'gh-pages',
     locationsPath: envConfig.LOCATIONS_PATH ?? '_data/locations',
   },

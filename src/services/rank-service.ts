@@ -20,21 +20,21 @@ export async function getOrdinalRank(
     url,
   });
 
-  // Parse YAML properly instead of string splitting
-  const parsed = YAML.parse(data);
-
-  if (!Array.isArray(parsed)) {
+  // Original approach: split by blank lines to handle multiple YAML documents
+  const userData = data.split('\n\n').find((u) => u.includes(username));
+  if (!userData) {
     return null;
   }
 
-  const userData = parsed.find(
-    (entry: { login?: string; username?: string }) =>
-      entry.login === username || entry.username === username,
-  );
-
-  if (!userData || typeof userData.rank !== 'number') {
+  const parsed = YAML.parse(userData);
+  if (!parsed || !Array.isArray(parsed) || parsed.length === 0) {
     return null;
   }
 
-  return ordinal(userData.rank);
+  const userEntry = parsed[0];
+  if (typeof userEntry?.rank !== 'number') {
+    return null;
+  }
+
+  return ordinal(userEntry.rank);
 }
