@@ -6,7 +6,8 @@
   "scripts": {
     "start": "npx tsx src/index.ts",
     "dev": "npx tsx watch src/index.ts",
-    "lint": "biome ci ."
+    "lint": "biome ci .",
+    "test": "vitest"
   },
   "keywords": [],
   "author": "Ahmed Mohamed <3bsalam0@gmail.com>",
@@ -37,6 +38,7 @@
     "@types/node": "^20.14.0",
     "@types/yamljs": "^0.2.34",
     "tsx": "^4.21.0",
-    "typescript": "^5.4.5"
+    "typescript": "^5.4.5",
+    "vitest": "^2.1.9"
   }
 }
