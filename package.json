@@ -1,6 +1,7 @@
 {
   "name": "top-badge",
   "version": "1.0.0",
+  "type": "module",
   "main": "src/index.ts",
   "scripts": {
     "start": "npx tsx src/index.ts",
