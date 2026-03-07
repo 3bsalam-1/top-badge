@@ -6,6 +6,10 @@ export const badgeParamsSchema = z.object({
 });
 
 export const badgeQuerySchema = z.object({
+  category: z
+    .enum(['all', 'commits', 'contributes'])
+    .default('all')
+    .describe('The category of ranking to fetch (all, commits, or contributes).'),
   style: z
     .enum(['flat', 'plastic', 'flat-square', 'for-the-badge', 'social'])
     .default('flat')
@@ -37,7 +41,12 @@ export const rankParamsSchema = z.object({
   username: z.string().describe('The username.'),
 });
 
-export const rankQuerySchema = z.object({});
+export const rankQuerySchema = z.object({
+  category: z
+    .enum(['all', 'commits', 'contributes'])
+    .default('all')
+    .describe('The category of ranking to fetch (all, commits, or contributes).'),
+});
 
 export const rankResponseSchema = z.object({
   rank: z.string().nullish(),

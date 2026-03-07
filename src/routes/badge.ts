@@ -24,7 +24,7 @@ export async function registerBadgeRoutes(app: FastifyInstance): Promise<void> {
         username: string;
         country: string;
       };
-      const { style, label, labelColor, color, rnkPrefix, rnkSuffix } =
+      const { style, label, labelColor, color, rnkPrefix, rnkSuffix, category } =
         request.query as {
           style?: string;
           label?: string;
@@ -32,9 +32,10 @@ export async function registerBadgeRoutes(app: FastifyInstance): Promise<void> {
           color?: string;
           rnkPrefix?: string;
           rnkSuffix?: string;
+          category?: string;
         };
 
-      const userRank = await getOrdinalRank(username, country);
+      const userRank = await getOrdinalRank(username, country, (category as 'all' | 'commits' | 'contributes') ?? 'all');
       if (!userRank) {
         return reply.status(400).send({
           statusCode: 400,
