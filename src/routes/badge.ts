@@ -35,7 +35,7 @@ export async function registerBadgeRoutes(app: FastifyInstance): Promise<void> {
           category?: string;
         };
 
-      const userRank = await getOrdinalRank(username, country, (category as 'all' | 'commits' | 'contributes') ?? 'all');
+      const userRank = await getOrdinalRank(username, country, (category as 'all' | 'commits' | 'contributes') ?? 'commits');
       if (!userRank) {
         return reply.status(400).send({
           statusCode: 400,

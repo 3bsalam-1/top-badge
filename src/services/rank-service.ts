@@ -45,7 +45,7 @@ export type Category = 'all' | 'commits' | 'contributes';
 export async function getOrdinalRank(
   username: string,
   country: string,
-  category: Category = 'all',
+  category: Category = 'commits',
 ): Promise<string | null> {
   // Normalize country to lowercase for consistent cache key and URL
   const normalizedCountry = country.toLowerCase();
@@ -91,56 +91,50 @@ export async function getOrdinalRank(
     return null;
   }
 
-  // Parse all users from the YAML
+  // Parse users from the YAML - the YAML has 3 sections:
+  // 1. users: - commits
+  // 2. users_public_contributions: - contributes  
+  // 3. private_users: - all
   const userRanks: Record<string, string> = {};
   const userDataBlocks = data.split('\n\n');
 
   console.log(`[DEBUG] Fetched YAML from ${url}, total blocks: ${userDataBlocks.length}, category: ${category}`);
 
-  // Track which block number corresponds to which category
-  // Block 0 = all, Block 1 = commits, Block 2 = contributes (based on committers.top structure)
-  const categoryBlockMap: Record<Category, number> = {
-    all: 0,
-    commits: 1,
-    contributes: 2,
+  // Map categories to YAML keys
+  const categoryKeyMap: Record<Category, string> = {
+    commits: 'users',
+    contributes: 'users_public_contributions',
+    all: 'private_users',
   };
-  const targetBlockIndex = categoryBlockMap[category] ?? 0;
-
-  for (let blockIndex = 0; blockIndex < userDataBlocks.length; blockIndex++) {
-    const block = userDataBlocks[blockIndex];
-    try {
-      const parsed = YAML.parse(block);
-      // Debug: Log structure of first block to understand YAML format
-      if (blockIndex === 0 && parsed && Array.isArray(parsed) && parsed.length > 0) {
-        console.log(`[DEBUG] First entry keys: ${Object.keys(parsed[0]).join(', ')}`);
-        console.log(`[DEBUG] First entry sample:`, JSON.stringify(parsed[0]));
-      }
+  const targetKey = categoryKeyMap[category] ?? 'users';
+  
+  // Parse the entire YAML as a single document to find the correct section
+  try {
+    const fullParsed = YAML.parse(data);
+    
+    if (fullParsed && typeof fullParsed === 'object') {
+      const sectionData = fullParsed[targetKey];
       
-      if (parsed && Array.isArray(parsed) && parsed.length > 0) {
-        const userEntry = parsed[0];
-        if (userEntry?.login || userEntry?.username) {
-          const userKey = userEntry.login ?? userEntry.username;
-          if (typeof userEntry.rank === 'number') {
-            // Only parse the block that matches the requested category
-            if (blockIndex === targetBlockIndex) {
+      if (Array.isArray(sectionData)) {
+        for (const userEntry of sectionData) {
+          if (userEntry?.login || userEntry?.username) {
+            const userKey = userEntry.login ?? userEntry.username;
+            if (typeof userEntry.rank === 'number') {
               userRanks[userKey] = ordinal(userEntry.rank);
-              // Debug: Log the user's rank we're parsing
+              
               if (userKey.toLowerCase() === username.toLowerCase()) {
-                console.log(`[DEBUG] Found user ${userKey} with rank ${userEntry.rank} => ${ordinal(userEntry.rank)} in block ${blockIndex}`);
+                console.log(`[DEBUG] Found user ${userKey} with rank ${userEntry.rank} => ${ordinal(userEntry.rank)} in section ${targetKey}`);
               }
             }
           }
         }
       }
-    } catch (error) {
-      // Skip invalid YAML blocks but log the error for debugging
-      console.warn(
-        `Failed to parse YAML block for ${country}: ${error instanceof Error ? error.message : error}`,
-      );
     }
+  } catch (error) {
+    console.warn(`Failed to parse YAML sections: ${error instanceof Error ? error.message : error}`);
   }
 
-  console.log(`[DEBUG] Total users parsed: ${Object.keys(userRanks).length}, looking for: ${username}`);
+  console.log(`[DEBUG] Total users parsed: ${Object.keys(userRanks).length}, looking for: ${username}, result: ${userRanks[username]}`);
 
   // Cache the results for this country
   const rankCacheInstance = getRankCache();

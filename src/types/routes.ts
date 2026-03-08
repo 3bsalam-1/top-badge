@@ -8,7 +8,7 @@ export const badgeParamsSchema = z.object({
 export const badgeQuerySchema = z.object({
   category: z
     .enum(['all', 'commits', 'contributes'])
-    .default('all')
+    .default('commits')
     .describe('The category of ranking to fetch (all, commits, or contributes).'),
   style: z
     .enum(['flat', 'plastic', 'flat-square', 'for-the-badge', 'social'])
@@ -44,7 +44,7 @@ export const rankParamsSchema = z.object({
 export const rankQuerySchema = z.object({
   category: z
     .enum(['all', 'commits', 'contributes'])
-    .default('all')
+    .default('commits')
     .describe('The category of ranking to fetch (all, commits, or contributes).'),
 });
 

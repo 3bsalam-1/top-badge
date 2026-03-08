@@ -6,7 +6,7 @@
 Top Badge is a simple web service. It returns a badge (or JSON) that shows your rank among other GitHub users from your country according to your GitHub contributions.
 
 > **Note**  
->  
+> 
 > Top Badge depends on the data provided by [ashkulz/committers.top](//github.com/ashkulz/committers.top).  
 > So please make sure that your name appears on your country list here [committers.top](https://committers.top).
 
@@ -34,6 +34,10 @@ Redirects to this repository.
 
 ##### Query Parameters
 
+- `category` - The category of ranking to fetch. Can be one of `all`, `commits`, or `contributes`. Defaults to `commits`.
+  - `all` - Total activity (commits + PRs + issues + reviews)
+  - `commits` - Only commit count (default)
+  - `contributes` - PRs, issues, and reviews (excluding plain commits)
 - `style` - Set the style of the badge. Can be one of `flat`, `flat-square`, `for-the-badge`, or `plastic`. Defaults to `flat`.
 - `label` - Set the left-hand-side text. Defaults to `Most Active GitHub User Rank`.
 - `color` - Set the background of the right part (hex, rgb, rgba, hsl, hsla and css named colors supported). Defaults to `brightgreen`.
@@ -47,7 +51,13 @@ Redirects to this repository.
 > ![badge](https://top-badge.vercel.app/egypt/3bsalam-1)
 
 > `![badge](https://top-badge.vercel.app/egypt/3bsalam-1?style=flat-square&color=blue)`  
-> ![badge](https://top-badge.vercel.app/egypt/3bsalam-1?style=flat-square&color=blue)  
+> ![badge](https://top-badge.vercel.app/egypt/3bsalam-1?style=flat-square&color=blue)
+
+> `![badge](https://top-badge.vercel.app/egypt/3bsalam-1?category=commits)` - Get commits-only rank (default)  
+> ![badge](https://top-badge.vercel.app/egypt/3bsalam-1?category=commits)
+
+> `![badge](https://top-badge.vercel.app/egypt/3bsalam-1?category=all)` - Get all activity rank  
+> ![badge](https://top-badge.vercel.app/egypt/3bsalam-1?category=all)
 
 ---
 
@@ -66,3 +76,18 @@ $ curl https://top-badge.vercel.app/rank/egypt/3bsalam-1
     "rank": "1st"
 }
 ```
+
+---
+
+## Deployment
+
+This project is deployed on Vercel. The following environment variables can be configured:
+
+| Variable | Description | Default |
+|----------|-------------|---------|
+| `CACHE_ENABLED` | Enable/disable caching (`true` or `false`) | `true` |
+| `CACHE_TTL` | Cache time-to-live in seconds | `3600` |
+
+## License
+
+ISC
