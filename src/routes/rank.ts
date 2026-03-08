@@ -1,5 +1,5 @@
 import type { FastifyInstance } from 'fastify';
-import { getOrdinalRank } from '../services/rank-service.js';
+import { getOrdinalRank, NetworkError } from '../services/rank-service.js';
 import {
   rankParamsSchema,
   rankQuerySchema,
@@ -14,6 +14,8 @@ export async function registerRankRoutes(app: FastifyInstance): Promise<void> {
       response: {
         200: rankResponseSchema,
         400: rankResponseSchema,
+        503: rankResponseSchema,
+        404: rankResponseSchema
       },
       summary: 'Get the rank of a user in a country (JSON format).',
       tags: ['json'],
@@ -26,12 +28,33 @@ export async function registerRankRoutes(app: FastifyInstance): Promise<void> {
       const { category } = request.query as {
         category?: string;
       };
-      const rank = await getOrdinalRank(
-        username,
-        country,
-        (category as 'all' | 'commits' | 'contributes') ?? 'commits',
-      );
-      return rank ? { rank } : reply.status(400).send({ rank: null });
+      
+      try {
+        const rank = await getOrdinalRank(
+          username,
+          country,
+          (category as 'all' | 'commits' | 'contributes') ?? 'commits',
+        );
+        
+        if (!rank) {
+          return reply.status(404).send({
+            statusCode: 404,
+            error: 'Not Found',
+            message: 'Username not found. Please check your username and country here https://commits.top',
+          });
+        }
+        
+        return { rank };
+      } catch (error) {
+        if (error instanceof NetworkError) {
+          return reply.status(503).send({
+            statusCode: 503,
+            error: 'Service Unavailable',
+            message: 'Failed to fetch rank data. Please try again later.',
+          });
+        }
+        throw error;
+      }
     },
   });
 }

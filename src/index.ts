@@ -1,4 +1,5 @@
 import fastify from 'fastify';
+import fastifyCors from '@fastify/cors';
 import {
   serializerCompiler,
   validatorCompiler,
@@ -9,6 +10,14 @@ import { registerBadgeRoutes, registerRankRoutes } from './routes/index.js';
 import { registerSwagger } from './swagger.js';
 
 const app = fastify();
+
+// Health check endpoint
+app.get('/health', async () => {
+  return { status: 'ok', timestamp: new Date().toISOString() };
+});
+
+// CORS support for badge embedding
+app.register(fastifyCors, { origin: true });
 
 app.get('/', async (_, reply) =>
   reply.redirect('https://github.com/3bsalam-1/top-badge'),
