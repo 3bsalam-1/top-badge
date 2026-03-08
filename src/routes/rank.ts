@@ -29,7 +29,7 @@ export async function registerRankRoutes(app: FastifyInstance): Promise<void> {
       const rank = await getOrdinalRank(
         username,
         country,
-        (category as 'all' | 'commits' | 'contributes') ?? 'all',
+        (category as 'all' | 'commits' | 'contributes') ?? 'commits',
       );
       return rank ? { rank } : reply.status(400).send({ rank: null });
     },
