@@ -28,7 +28,7 @@
     "axios": "^1.7.2",
     "badge-maker": "^3.3.1",
     "fastify": "^5.8.2",
-    "fastify-type-provider-zod": "^3.0.0",
+    "fastify-type-provider-zod": "^1.2.0",
     "ordinal": "^1.0.3",
     "yamljs": "^0.3.0",
     "zod": "^3.23.8"
